@@ -118,7 +118,22 @@ function findJSFiles(rootDir: string, configFile: string, sources?: string | str
  */
 function jsFileContainsJsx(jsFileName: string): boolean {
   const contents = fs.readFileSync(jsFileName, 'utf8');
-  return /(from ['"]react['"]|@jsx)/.test(contents) && /<[A-Za-z>]/.test(contents);
+
+  // Check for opening and closing JSX tags
+  const jsxTagPattern = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>[\s\S]*?<\/\1>/;
+  // Check for self-closing JSX tags
+  const selfClosingJsxTagPattern = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*\/>/;
+  // Check for fragment shorthand syntax
+  const fragmentPattern = /<>\s*([\s\S]*?)\s*<\/>/;
+  // Check for component usage patterns (starting with uppercase letters)
+  const componentUsagePattern = /<[A-Z][A-Za-z0-9]*\b[^>]*\/?>/;
+
+  return (
+    jsxTagPattern.test(contents) ||
+    selfClosingJsxTagPattern.test(contents) ||
+    fragmentPattern.test(contents) ||
+    componentUsagePattern.test(contents)
+  );
 }
 
 function updateProjectJson(rootDir: string) {

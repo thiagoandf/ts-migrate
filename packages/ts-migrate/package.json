@@ -68,6 +68,7 @@
     "ts-migrate-plugins": "^0.1.35",
     "ts-migrate-server": "^0.1.33",
     "updatable-log": "^0.2.0",
+    "typescript": "5.3.3",
     "yargs": "^15.0.2"
   },
   "devDependencies": {
